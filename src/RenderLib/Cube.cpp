@@ -74,13 +74,13 @@ void Cube::render(Camera& camera, Shader& shader)
   glBindVertexArray(vao_);
 
   /* set uniform */
-  const Eigen::Matrix4f proj = camera.get_proj();
-  const Eigen::Matrix4f view = camera.get_view();
-  const Eigen::Matrix4f model = this->get_mat();
+  const Eigen::Matrix4f proj = camera.get_proj().transpose();
+  const Eigen::Matrix4f view = camera.get_view().transpose();
+  const Eigen::Matrix4f model = this->get_mat().transpose();
   const Eigen::Matrix4f mvp = proj * view * model;
   shader.set_uniform("MVP", mvp);
 
-  glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(float), GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
   shader.use_program("None");
 }
