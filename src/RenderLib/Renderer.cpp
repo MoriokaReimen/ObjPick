@@ -44,7 +44,7 @@ void Renderer::update()
   camera_.set_perspective(30.f, 1.f / ratio, 0.01f, 10000.f);
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  camera_.look_at(Eigen::Vector3f(10.f, 0.f, 0.f), Eigen::Vector3f::Zero(), Eigen::Vector3f::UnitZ());
+  camera_.look_at(Eigen::Vector3f(10.f, 10.f, 10.f), Eigen::Vector3f::Zero(), Eigen::Vector3f::UnitZ());
   cube_.render(camera_, shader_);
 }
 

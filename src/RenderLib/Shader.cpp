@@ -251,8 +251,8 @@ bool Shader::set_uniform(const std::string& name, const Eigen::Matrix4f& value)
 {
     bool ret = false;
     const GLuint location = glGetUniformLocation(current_program_, name.c_str());
-        glProgramUniformMatrix4fv(current_program_, location, 1, GL_FALSE, value.data());
-        ret = true;
+    glProgramUniformMatrix4fv(current_program_, location, 1, GL_TRUE, value.data());
+    ret = true;
 
     return ret;
 }
