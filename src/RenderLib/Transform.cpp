@@ -76,4 +76,14 @@ Eigen::Vector3f Transform::to_rpy() const
     return euler * 180.f / PI;
 }
 
+Eigen::Matrix4f Transform::get_mat() const
+{
+    Eigen::Matrix4f ret = Eigen::Matrix4f::Identity();
+    auto rot = quat_.toRotationMatrix();
+    ret.block(0, 0, 3, 3) = rot;
+    ret.block(0, 4, 3, 4) = pos_;
+
+    return ret;
+}
+
 }

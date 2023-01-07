@@ -36,6 +36,7 @@ public:
 
     void from_rpy(const float& roll, const float& pitch, const float& yaw);
     Eigen::Vector3f to_rpy() const;
+    Eigen::Matrix4f get_mat() const;
 };
 }
 #endif

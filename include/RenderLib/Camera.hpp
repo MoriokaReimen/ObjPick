@@ -15,10 +15,10 @@
 namespace RenderLib
 {
 
-  class Camera : public Transform
-  {
+class Camera : public Transform
+{
     Eigen::Matrix4f proj_;
-    public:
+public:
     Camera();
     ~Camera() override;
     Eigen::Matrix4f get_view() const;
@@ -28,7 +28,7 @@ namespace RenderLib
     void set_ortho(const float& left, const float& right, const float& bottom,
                    const float& top,  const float& zNear, const float& zFar);
     void look_at(const Eigen::Vector3f& eye, const Eigen::Vector3f& center, const Eigen::Vector3f& up);
-  };
+};
 
 }
 #endif
