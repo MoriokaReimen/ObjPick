@@ -79,6 +79,7 @@ FetchContent_Declare(
 )
 FetchContent_Populate(glad)
 add_subdirectory(${glad_SOURCE_DIR}/cmake ${glad_BINARY_DIR})
+glad_add_library(glad_gl_core_46 STATIC API gl:core=4.6)
 
 ###########################################################################
 # Fetch glfw
