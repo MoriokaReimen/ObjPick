@@ -28,6 +28,7 @@ Cube::Cube()
 {
   glGenVertexArrays(1, &vao_);  
   glBindVertexArray(vao_);
+
   /* create vertex buffer */
   glGenBuffers(1, &vbo_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
@@ -64,7 +65,7 @@ void Cube::render(Camera& camera, Shader& shader)
   const Eigen::Matrix4f mvp = proj * view * model;
   shader.set_uniform("MVP", mvp);
 
-  glDrawElements(GL_TRIANGLES, 1, GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
   shader.use_program("None");
 }
