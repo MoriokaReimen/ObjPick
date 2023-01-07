@@ -1,5 +1,5 @@
-#ifndef RENDER_HPP
-#define RENDER_HPP
+#ifndef SHADER_HPP
+#define SHADER_HPP
 /*
   ███╗░░░███╗░█████╗░██████╗░██╗░█████╗░██╗░░██╗░█████╗░
   ████╗░████║██╔══██╗██╔══██╗██║██╔══██╗██║░██╔╝██╔══██╗
@@ -15,7 +15,6 @@
 
 namespace RenderLib
 {
-
 class Shader
 {
   std::unordered_map<std::string, GLuint> programs_;

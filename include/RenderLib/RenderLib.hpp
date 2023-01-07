@@ -1,5 +1,5 @@
-#ifndef RENDER_HPP
-#define RENDER_HPP
+#ifndef RENDERLIB_HPP
+#define RENDERLIB_HPP
 /*
   ███╗░░░███╗░█████╗░██████╗░██╗░█████╗░██╗░░██╗░█████╗░
   ████╗░████║██╔══██╗██╔══██╗██║██╔══██╗██║░██╔╝██╔══██╗
@@ -11,4 +11,5 @@
 */
 #include "RenderLib/Window.hpp"
 #include "RenderLib/System.hpp"
+#include "RenderLib/Shader.hpp"
 #endif

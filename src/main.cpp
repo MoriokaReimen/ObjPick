@@ -12,6 +12,8 @@ int main()
   system.init();
   window.init();
 
+  RenderLib::Shader shader;
+
   while(!window.should_close())
   {
     window.update();
