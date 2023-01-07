@@ -42,7 +42,7 @@ void Camera::set_perspective(const float& fovy, const float& aspect, const float
     assert(aspect > 0);
     assert(zFar > zNear);
     assert(zNear > 0);
-    float radf = M_PI * fovy / 180.0;
+    float radf = M_PI * fovy / 180.f;
     float tan_half_fovy = std::tan(radf / 2.0);
     tr(0,0) = 1.0 / (aspect * tan_half_fovy);
     tr(1,1) = 1.0 / (tan_half_fovy);
@@ -50,7 +50,6 @@ void Camera::set_perspective(const float& fovy, const float& aspect, const float
     tr(3,2) = - 1.0;
     tr(2,3) = - (2.0 * zFar * zNear) / (zFar - zNear);
     proj_ =  tr.matrix();
-
 }
 
 void Camera::set_ortho(const float& left, const float& right, const float& bottom,
@@ -84,8 +83,8 @@ void Camera::look_at(const Eigen::Vector3f& eye, const Eigen::Vector3f& center, 
     mat(2,1) = -f.y();
     mat(2,2) = -f.z();
 
-    quat() = Eigen::Quaternionf(mat);
-    pos() = Eigen::Vector3f(-s.dot(eye), -u.dot(eye), f.dot(eye));
+    quat() = Eigen::Quaternionf(mat).inverse();
+    pos() = Eigen::Vector3f(s.dot(eye), u.dot(eye), -f.dot(eye));
 }
 
 }

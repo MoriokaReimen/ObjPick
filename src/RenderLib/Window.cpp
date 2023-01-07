@@ -62,7 +62,7 @@ namespace RenderLib
 Window::Window(entt::registry& registry)
     : IModule(registry)
 {
-    Context ctx{nullptr, 640, 480, 640.f/480.f};
+    Context ctx{nullptr, 640, 480, 480.f/640.f};
     registry_.ctx().emplace<Context>(ctx);
     spdlog::info("Window Module Created");
 }
@@ -110,8 +110,6 @@ void Window::init()
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(message_callback, nullptr);
-
-
 }
 
 void Window::update()
@@ -122,7 +120,7 @@ void Window::update()
     auto& ratio = registry_.ctx().get<Context>().ratio;
     /* Update frame buffer size */
     glfwGetFramebufferSize(window, &width, &height);
-    ratio = static_cast<float>(width) / static_cast<float>(height);
+    ratio = static_cast<float>(height) / static_cast<float>(width);
 
     /* Render window */
     glfwSwapBuffers(window);

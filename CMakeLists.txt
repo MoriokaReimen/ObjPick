@@ -45,3 +45,10 @@ add_executable(main ${MAIN_SRC})
 target_include_directories(main PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include/)
 target_link_libraries(main PRIVATE RenderLib)
 
+###########################################################################
+# Configure test
+###########################################################################
+file(GLOB TEST_SRC ${CMAKE_CURRENT_LIST_DIR}/test/*.cpp)
+add_executable(test ${TEST_SRC})
+target_include_directories(test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include/)
+target_link_libraries(test PRIVATE RenderLib gtest gtest_main)

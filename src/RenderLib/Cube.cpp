@@ -8,16 +8,31 @@
   2023/1/7
 */
 #include "RenderLib/Cube.hpp"
+#include <iostream>
 constexpr float vertices[] = {
-     0.5f,  0.5f, 0.0f,  // top right
-     0.5f, -0.5f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 0.0f   // top left 
+     0.5f,  0.5f, 0.5f,  // top right
+     0.5f, -0.5f, 0.5f,  // bottom right
+    -0.5f, -0.5f, 0.5f,  // bottom left
+    -0.5f,  0.5f, 0.5f,  // top left 
+     0.5f,  0.5f, -0.5f,  // top right
+     0.5f, -0.5f, -0.5f,  // bottom right
+    -0.5f, -0.5f, -0.5f,  // bottom left
+    -0.5f,  0.5f, -0.5f   // top left 
 };
 
 constexpr unsigned int indices[] = {  // note that we start from 0!
-    0, 1, 3,   // first triangle
-    1, 2, 3    // second triangle
+    0, 1, 2,
+    0, 2, 3,
+    0, 4, 8,
+    0, 3, 7,
+    0, 4, 5,
+    0, 1, 5,
+    1, 2, 6,
+    1, 5, 6,
+    2, 3, 7,
+    2, 6, 7,
+    5, 6, 7,
+    4, 5, 7
 };  
 
 namespace RenderLib
@@ -62,10 +77,13 @@ void Cube::render(Camera& camera, Shader& shader)
   const auto proj = camera.get_proj();
   const auto view = camera.get_view();
   const auto model = this->get_mat();
-  const Eigen::Matrix4f mvp = proj * view * model;
+  const Eigen::Matrix4f mvp = proj * view * model / 5.0;
+  // std::cout << std::endl;
+  // std::cout << mvp * Eigen::Vector4f::UnitZ();
+  // std::cout << std::endl;
   shader.set_uniform("MVP", mvp);
 
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_LINES, sizeof(indices)/sizeof(float), GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
   shader.use_program("None");
 }
