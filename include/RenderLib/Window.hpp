@@ -1,5 +1,5 @@
-#ifndef IMODULE_HPP
-#define IMODULE_HPP
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 /*
   ███╗░░░███╗░█████╗░██████╗░██╗░█████╗░██╗░░██╗░█████╗░
   ████╗░████║██╔══██╗██╔══██╗██║██╔══██╗██║░██╔╝██╔══██╗
@@ -9,27 +9,22 @@
   ╚═╝░░░░░╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝
   2023/1/7 
 */
+#include "RenderLib/IModule.hpp"
 #include <entt/entt.hpp>
 
-namespace Render
+namespace RenderLib
 {
-  class IModule
+  class Window :IModule
   {
-    protected:
-      entt::registry& registry_;
     public:
-
-      IModule(entt::registry& registry)
-        : registry_(registry)
+      struct Context
       {
-      }
-
-      virtual ~IModule()
-      {
-      }
-
-      virtual void init() = 0;
-      virtual void update() = 0;
+      };
+    public:
+      Window(entt::registry& registry);
+      ~Window() override;
+      void init() override;
+      void update() override;
   };
 }
 #endif

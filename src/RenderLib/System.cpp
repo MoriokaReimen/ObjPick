@@ -1,5 +1,3 @@
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
 /*
   ███╗░░░███╗░█████╗░██████╗░██╗░█████╗░██╗░░██╗░█████╗░
   ████╗░████║██╔══██╗██╔══██╗██║██╔══██╗██║░██╔╝██╔══██╗
@@ -9,22 +7,30 @@
   ╚═╝░░░░░╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝
   2023/1/7 
 */
-#include "Render/IModule.hpp"
-#include <entt/entt.hpp>
+#include "RenderLib/System.hpp"
+#include <spdlog/spdlog.h>
 
-namespace Render
+namespace RenderLib
 {
-  class Window :IModule
-  {
-    public:
-      struct Context
-      {
-      };
-    public:
-      Window(entt::registry& registry);
-      ~Window() override;
-      void init() override;
-      void update() override;
-  };
+System::System(entt::registry& registry)
+: IModule(registry)
+{
+    Context ctx;
+    registry_.ctx().emplace<Context>(ctx);
+    spdlog::info("System Module Created");
 }
-#endif
+
+System::~System()
+{
+    spdlog::info("System Finalized");
+}
+
+void System::init()
+{
+    spdlog::info("System Initialized");
+}
+
+void System::update()
+{
+}
+}

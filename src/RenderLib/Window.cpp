@@ -7,30 +7,30 @@
   ╚═╝░░░░░╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝
   2023/1/7 
 */
-#include "Render/System.hpp"
+#include "RenderLib/Window.hpp"
 #include <spdlog/spdlog.h>
 
 namespace RenderLib
 {
-System::System(entt::registry& registry)
-: IModule(registry)
-{
+  Window::Window(entt::registry& registry)
+    : IModule(registry)
+  {
     Context ctx;
     registry_.ctx().emplace<Context>(ctx);
-    spdlog::info("System Module Created");
-}
+    spdlog::info("Window Module Created");
+  }
 
-System::~System()
-{
-    spdlog::info("System Finalized");
-}
+  Window::~Window()
+  {
+    spdlog::info("Window Finalized");
+  }
 
-void System::init()
-{
-    spdlog::info("System Initialized");
-}
+  void init()
+  {
+    spdlog::info("Window Initialized");
+  }
 
-void System::update()
-{
-}
+  void update()
+  {
+  }
 }

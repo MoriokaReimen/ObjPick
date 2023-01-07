@@ -20,12 +20,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/ThirdParty.cmake)
 
 ###########################################################################
-# Configure Render build
+# Configure RenderLib build
 ###########################################################################
-file(GLOB RENDER_SRC ${CMAKE_CURRENT_LIST_DIR}/src/Render/*.cpp)
-add_library(Render STATIC ${RENDER_SRC})
-target_include_directories(Render PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
-target_link_libraries(Render Boost::Boost EnTT::EnTT glfw Eigen3::Eigen fmt::fmt
+file(GLOB RENDER_SRC ${CMAKE_CURRENT_LIST_DIR}/src/RenderLib/*.cpp)
+add_library(RenderLib STATIC ${RENDER_SRC})
+target_include_directories(RenderLib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
+target_link_libraries(RenderLib Boost::Boost EnTT::EnTT glfw Eigen3::Eigen fmt::fmt
                              spdlog::spdlog glad_gl_core_46)
 
 ###########################################################################
@@ -34,5 +34,5 @@ target_link_libraries(Render Boost::Boost EnTT::EnTT glfw Eigen3::Eigen fmt::fmt
 file(GLOB MAIN_SRC ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 add_executable(main ${MAIN_SRC})
 target_include_directories(main PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include/)
-target_link_libraries(main PRIVATE Render)
+target_link_libraries(main PRIVATE RenderLib)
 

@@ -1,5 +1,5 @@
-#ifndef SYSTEM_HPP
-#define SYSTEM_HPP
+#ifndef IMODULE_HPP
+#define IMODULE_HPP
 /*
   ███╗░░░███╗░█████╗░██████╗░██╗░█████╗░██╗░░██╗░█████╗░
   ████╗░████║██╔══██╗██╔══██╗██║██╔══██╗██║░██╔╝██╔══██╗
@@ -9,22 +9,27 @@
   ╚═╝░░░░░╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝
   2023/1/7 
 */
-#include "Render/IModule.hpp"
 #include <entt/entt.hpp>
 
-namespace Render
+namespace RenderLib
 {
-  class System :IModule
+  class IModule
   {
+    protected:
+      entt::registry& registry_;
     public:
-      struct Context
+
+      IModule(entt::registry& registry)
+        : registry_(registry)
       {
-      };
-    public:
-      System(entt::registry& registry);
-      ~System() override;
-      void init() override;
-      void update() override;
+      }
+
+      virtual ~IModule()
+      {
+      }
+
+      virtual void init() = 0;
+      virtual void update() = 0;
   };
 }
 #endif

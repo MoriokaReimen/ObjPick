@@ -9,6 +9,6 @@
   ╚═╝░░░░░╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝
   2023/1/7 
 */
-#include "Render/Window.hpp"
-#include "Render/System.hpp"
+#include "RenderLib/Window.hpp"
+#include "RenderLib/System.hpp"
 #endif
