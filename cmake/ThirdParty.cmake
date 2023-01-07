@@ -168,3 +168,16 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(spdlog)
 
+###########################################################################
+# Fetch cmrc
+###########################################################################
+FetchContent_Declare(
+  cmrc
+  GIT_REPOSITORY https://github.com/vector-of-bool/cmrc.git
+  GIT_TAG        master
+  GIT_SHALLOW    ON
+  QUIET          OFF
+  GIT_PROGRESS   ON
+  OVERRIDE_FIND_PACKAGE
+)
+FetchContent_MakeAvailable(cmrc)
