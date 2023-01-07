@@ -25,7 +25,7 @@ Eigen::Matrix4f Camera::get_view() const
     Eigen::Matrix3f mat3 = quat().toRotationMatrix();
     Eigen::Matrix4f mat4 = Eigen::Matrix4f::Identity();
     mat4.block(0, 0, 3, 3) = mat3;
-    mat4.block(0, 4, 3, 4) = pos();
+    mat4.block(0, 3, 3, 1) = pos();
 
     return mat4;
 }

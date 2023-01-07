@@ -12,6 +12,7 @@
 #include "RenderLib/IModule.hpp"
 #include "RenderLib/Camera.hpp"
 #include "RenderLib/Shader.hpp"
+#include "RenderLib/Cube.hpp"
 
 namespace RenderLib
 {
@@ -20,6 +21,7 @@ class Renderer : public IModule
   private:
     Shader shader_;
     Camera camera_;
+    Cube cube_;
 
   public:
     struct Context {

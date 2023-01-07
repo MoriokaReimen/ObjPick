@@ -24,7 +24,7 @@ namespace RenderLib
 Window::Window(entt::registry& registry)
     : IModule(registry)
 {
-    Context ctx;
+    Context ctx{nullptr, 640, 480, 640.f/480.f};
     registry_.ctx().emplace<Context>(ctx);
     spdlog::info("Window Module Created");
 }
