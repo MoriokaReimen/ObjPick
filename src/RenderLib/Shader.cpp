@@ -107,7 +107,11 @@ GLuint Shader::compile_(const std::string& vertex_path, const std::string& fragm
 }
 
 Shader::Shader()
+  : programs_(), current_program_(0u)
 {
+  /* Compile None shader */
+  programs_["None"] = 0u;
+
   /* Compile cube shader */
   {
     auto program = compile_("shader/Cube.vert", "shader/Cube.frag");
@@ -131,9 +135,168 @@ bool Shader::use_program(const std::string& program_name)
   {
     const GLuint program = programs_[program_name];
     glUseProgram(program);
+    current_program_ = program;
     ret = true;
   } else {
     spdlog::error("Program {} not found", program_name);
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const unsigned int& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniform1ui(current_program_, location, value);
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const int& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniform1i(current_program_, location, value);
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const Eigen::Vector2i& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniform2iv(current_program_, location, 1, value.data());
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const Eigen::Vector3i& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniform3iv(current_program_, location, 1, value.data());
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const Eigen::Vector4i& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniform4iv(current_program_, location, 1, value.data());
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const float& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniform1i(current_program_, location, value);
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const Eigen::Vector2f& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniform2fv(current_program_, location, 1, value.data());
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const Eigen::Vector3f& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniform3fv(current_program_, location, 1, value.data());
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const Eigen::Vector4f& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniform4fv(current_program_, location, 1, value.data());
+    ret = true;
+  }
+
+  return ret;
+}
+
+
+
+
+bool Shader::set_uniform(const std::string& name, const Eigen::Matrix2f& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniformMatrix2fv(current_program_, location, 1, GL_FALSE, value.data());
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const Eigen::Matrix3f& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniformMatrix3fv(current_program_, location, 1, GL_FALSE, value.data());
+    ret = true;
+  }
+
+  return ret;
+}
+
+bool Shader::set_uniform(const std::string& name, const Eigen::Matrix4f& value)
+{
+  bool ret = false;
+  const GLuint location = glGetUniformLocation(current_program_, name.c_str());
+  if(location != 0)
+  {
+    glProgramUniformMatrix4fv(current_program_, location, 1, GL_FALSE, value.data());
+    ret = true;
   }
 
   return ret;
