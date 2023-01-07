@@ -27,7 +27,7 @@ Eigen::Matrix4f Camera::get_view() const
     mat4.block(0, 0, 3, 3) = mat3;
     mat4.block(0, 3, 3, 1) = pos();
 
-    return mat4;
+    return mat4.transpose();
 }
 
 Eigen::Matrix4f Camera::get_proj() const
@@ -47,8 +47,8 @@ void Camera::set_perspective(const float& fovy, const float& aspect, const float
     tr(0,0) = 1.0 / (aspect * tan_half_fovy);
     tr(1,1) = 1.0 / (tan_half_fovy);
     tr(2,2) = - (zFar + zNear) / (zFar - zNear);
-    tr(3,2) = - 1.0;
-    tr(2,3) = - (2.0 * zFar * zNear) / (zFar - zNear);
+    tr(3,2) = - (2.0 * zFar * zNear) / (zFar - zNear);
+    tr(2,3) = - 1.0;
     proj_ =  tr.matrix();
 }
 
@@ -68,23 +68,12 @@ void Camera::set_ortho(const float& left, const float& right, const float& botto
 
 void Camera::look_at(const Eigen::Vector3f& eye, const Eigen::Vector3f& center, const Eigen::Vector3f& up)
 {
-    Eigen::Vector3f f = (center - eye).normalized();
-    Eigen::Vector3f u = up.normalized();
-    Eigen::Vector3f s = f.cross(u).normalized();
-    u = s.cross(f);
-    Eigen::Matrix3f mat = Eigen::Matrix3f::Zero();
-    mat(0,0) = s.x();
-    mat(0,1) = s.y();
-    mat(0,2) = s.z();
-    mat(1,0) = u.x();
-    mat(1,1) = u.y();
-    mat(1,2) = u.z();
-    mat(2,0) = -f.x();
-    mat(2,1) = -f.y();
-    mat(2,2) = -f.z();
-
-    quat() = Eigen::Quaternionf(mat).inverse();
-    pos() = Eigen::Vector3f(s.dot(eye), u.dot(eye), -f.dot(eye));
+  Eigen::Matrix3f R;
+  R.col(2) = (eye-center).normalized();
+  R.col(0) = up.cross(R.col(2)).normalized();
+  R.col(1) = R.col(2).cross(R.col(0));
+  quat() = Eigen::Quaternionf(R.transpose());
+  pos() =  -R.transpose() * eye;
 }
 
 }
