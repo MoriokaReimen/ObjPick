@@ -22,6 +22,9 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/ThirdParty.cmake)
 ###########################################################################
 # Configure sample build
 ###########################################################################
-file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
-add_library(sample STATIC ${SRC})
-target_link_libraries(sample Boost::Boost)
+file(GLOB RENDER_SRC ${CMAKE_CURRENT_LIST_DIR}/src/Render/*.cpp)
+add_library(Render STATIC ${RENDER_SRC})
+target_include_directories(Render PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
+target_link_libraries(Render Boost::Boost EnTT::EnTT glfw Eigen3::Eigen fmt::fmt
+                             glad spdlog::spdlog)
+
