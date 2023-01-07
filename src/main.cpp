@@ -12,9 +12,11 @@ int main()
     system.init();
     window.init();
 
-    RenderLib::Shader shader;
+    RenderLib::Renderer renderer(registry);
+    renderer.init();
 
     while(!window.should_close()) {
+        renderer.update();
         window.update();
         system.update();
     }
