@@ -5,7 +5,7 @@
   ██║╚██╔╝██║██║░░██║██╔══██╗██║██║░░██║██╔═██╗░██╔══██║
   ██║░╚═╝░██║╚█████╔╝██║░░██║██║╚█████╔╝██║░╚██╗██║░░██║
   ╚═╝░░░░░╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝
-  2023/1/7 
+  2023/1/7
 */
 #include "RenderLib/System.hpp"
 #include <spdlog/spdlog.h>
@@ -17,7 +17,7 @@ constexpr double TARGET_FPS_MSEC = 20.0;
 namespace RenderLib
 {
 System::System(entt::registry& registry)
-: IModule(registry), frame_start_(std::chrono::system_clock::now()), frame_end_(std::chrono::system_clock::now())
+    : IModule(registry), frame_start_(std::chrono::system_clock::now()), frame_end_(std::chrono::system_clock::now())
 {
     Context ctx;
     registry_.ctx().emplace<Context>(ctx);
@@ -36,19 +36,19 @@ void System::init()
 
 void System::update()
 {
-  /* Get Frame end time */
-  frame_end_ = std::chrono::system_clock::now();
+    /* Get Frame end time */
+    frame_end_ = std::chrono::system_clock::now();
 
-  /* Sleep for target FPS */
-  auto wake_up_time = frame_start_ + std::chrono::duration<double, std::milli>(TARGET_FPS_MSEC);
-  std::this_thread::sleep_until(wake_up_time);
+    /* Sleep for target FPS */
+    auto wake_up_time = frame_start_ + std::chrono::duration<double, std::milli>(TARGET_FPS_MSEC);
+    std::this_thread::sleep_until(wake_up_time);
 
-  /* Gathering FPS time information */
-  std::chrono::duration<double, std::milli> diff = frame_end_ - frame_start_;
-  registry_.ctx().get<Context>().fps_msec = diff.count();
-  registry_.ctx().get<Context>().consumption_percent = diff.count() / TARGET_FPS_MSEC;
+    /* Gathering FPS time information */
+    std::chrono::duration<double, std::milli> diff = frame_end_ - frame_start_;
+    registry_.ctx().get<Context>().fps_msec = diff.count();
+    registry_.ctx().get<Context>().consumption_percent = diff.count() / TARGET_FPS_MSEC;
 
-  /* Mark FPS start time for next loop */
-  frame_start_ = std::chrono::system_clock::now();
+    /* Mark FPS start time for next loop */
+    frame_start_ = std::chrono::system_clock::now();
 }
 }

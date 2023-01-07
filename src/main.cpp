@@ -5,20 +5,19 @@
 
 int main()
 {
-  spdlog::info("Start App");
-  entt::registry registry;
-  RenderLib::System system(registry);
-  RenderLib::Window window(registry);
-  system.init();
-  window.init();
+    spdlog::info("Start App");
+    entt::registry registry;
+    RenderLib::System system(registry);
+    RenderLib::Window window(registry);
+    system.init();
+    window.init();
 
-  RenderLib::Shader shader;
+    RenderLib::Shader shader;
 
-  while(!window.should_close())
-  {
-    window.update();
-    system.update();
-  }
+    while(!window.should_close()) {
+        window.update();
+        system.update();
+    }
 
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

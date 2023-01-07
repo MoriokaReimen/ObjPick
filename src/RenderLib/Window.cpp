@@ -5,7 +5,7 @@
   ██║╚██╔╝██║██║░░██║██╔══██╗██║██║░░██║██╔═██╗░██╔══██║
   ██║░╚═╝░██║╚█████╔╝██║░░██║██║╚█████╔╝██║░╚██╗██║░░██║
   ╚═╝░░░░░╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝
-  2023/1/7 
+  2023/1/7
 */
 #include "RenderLib/Window.hpp"
 #include <exception>
@@ -16,36 +16,35 @@
 
 static void error_callback(int error, const char* description)
 {
-  spdlog::error("GLFW Error {}:{}", error, description);
+    spdlog::error("GLFW Error {}:{}", error, description);
 }
 
 namespace RenderLib
 {
-  Window::Window(entt::registry& registry)
+Window::Window(entt::registry& registry)
     : IModule(registry)
-  {
+{
     Context ctx;
     registry_.ctx().emplace<Context>(ctx);
     spdlog::info("Window Module Created");
-  }
+}
 
-  Window::~Window()
-  {
+Window::~Window()
+{
     spdlog::info("Window Finalized");
     auto& window = registry_.ctx().get<Context>().window;
     glfwDestroyWindow(window);
     glfwTerminate();
-  }
+}
 
-  void Window::init()
-  {
+void Window::init()
+{
     spdlog::info("Window Initialized");
 
     /* init glfw */
-    if(!glfwInit())
-    {
-      spdlog::error("Failed to initialize OpenGL context");
-      throw std::runtime_error("Failed to initialize glfw");
+    if(!glfwInit()) {
+        spdlog::error("Failed to initialize OpenGL context");
+        throw std::runtime_error("Failed to initialize glfw");
     }
 
     glfwSetErrorCallback(error_callback);
@@ -60,16 +59,16 @@ namespace RenderLib
     /* Load OpenGL */
     int version = gladLoadGL(glfwGetProcAddress);
     if (version == 0) {
-      spdlog::error("Failed to initialize OpenGL context");
-      throw std::runtime_error("Failed to initialize OpenGL context");
+        spdlog::error("Failed to initialize OpenGL context");
+        throw std::runtime_error("Failed to initialize OpenGL context");
     }
     spdlog::info("Loaded OpenGL {}.{}", GLAD_VERSION_MAJOR(version), GLAD_VERSION_MINOR(version));
 
 
-  }
+}
 
-  void Window::update()
-  {
+void Window::update()
+{
     auto& window = registry_.ctx().get<Context>().window;
     auto& width = registry_.ctx().get<Context>().width;
     auto& height = registry_.ctx().get<Context>().height;
@@ -85,16 +84,15 @@ namespace RenderLib
     glfwPollEvents();
 
     /* Notify window close event */
-    if(glfwWindowShouldClose(window))
-    {
-      const auto entity = registry_.create();
-      registry_.emplace<WindowClose>(entity);
+    if(glfwWindowShouldClose(window)) {
+        const auto entity = registry_.create();
+        registry_.emplace<WindowClose>(entity);
     }
-  }
+}
 
-  bool Window::should_close() const
-  {
+bool Window::should_close() const
+{
     auto& window = registry_.ctx().get<Context>().window;
     return glfwWindowShouldClose(window);
-  }
+}
 }
