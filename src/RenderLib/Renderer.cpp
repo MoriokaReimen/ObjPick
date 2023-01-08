@@ -15,7 +15,7 @@
 namespace RenderLib
 {
 Renderer::Renderer(entt::registry& registry)
-    : IModule(registry), shader_(), camera_(), cube_()
+    : IModule(registry), shader_(), camera_(), cube_(), pick_frame_()
 {
     Context ctx;
     registry_.ctx().emplace<Context>(ctx);
@@ -45,7 +45,26 @@ void Renderer::update()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     camera_.look_at(Eigen::Vector3f(10.f, 10.f, 10.f), Eigen::Vector3f::Zero(), Eigen::Vector3f::UnitZ());
+
+    /* Render object */
     cube_.render(camera_, shader_);
+
+    /* render pick data */
+    pick_frame_.bind();
+    cube_.render_pick(camera_, shader_);
+    pick_frame_.unbind();
+
+    /* fetch pick data */
+    {
+      auto widow_width = registry_.ctx().get<Window::Context>().width;
+      auto widow_height = registry_.ctx().get<Window::Context>().height;
+      auto x = 0.5f;
+      auto y = 0.5f;
+      auto pick_data = pick_frame_.read_pixel(x, y);
+      registry_.ctx().get<Context>().pick_type_id = pick_data.type_id;
+      registry_.ctx().get<Context>().pick_object_id = pick_data.object_id;
+      registry_.ctx().get<Context>().pick_face_id = pick_data.face_id;
+    }
 }
 
 }

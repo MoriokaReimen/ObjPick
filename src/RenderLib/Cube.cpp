@@ -81,4 +81,22 @@ void Cube::render(Camera& camera, Shader& shader)
     glBindVertexArray(0);
     shader.use_program("None");
 }
+
+void Cube::render_pick(Camera& camera, Shader& shader)
+{
+    shader.use_program("Cube");
+    glBindVertexArray(vao_);
+
+    /* set uniform */
+    const Eigen::Matrix4f proj = camera.get_proj();
+    const Eigen::Matrix4f view = camera.get_view();
+    const Eigen::Matrix4f model = this->get_mat();
+    const Eigen::Matrix4f mvp = model * view * proj;
+    shader.set_uniform("MVP", mvp);
+
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+    shader.use_program("None");
+}
+
 }

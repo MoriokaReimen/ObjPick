@@ -1,5 +1,5 @@
-#ifndef CUBE_HPP
-#define CUBE_HPP
+#ifndef PICK_FRAME_HPP
+#define PICK_FRAME_HPP
 /*
   ███╗░░░███╗░█████╗░██████╗░██╗░█████╗░██╗░░██╗░█████╗░
   ████╗░████║██╔══██╗██╔══██╗██║██╔══██╗██║░██╔╝██╔══██╗
@@ -10,22 +10,30 @@
   2023/1/7
 */
 #include <glad/gl.h>
-#include "RenderLib/Transform.hpp"
-#include "RenderLib/IRenderObject.hpp"
 
 namespace RenderLib
 {
-class Cube : public Transform, IRenderObject
-{
-    GLuint vao_;
-    GLuint vbo_;
-    GLuint ebo_;
-public:
-    Cube();
-    ~Cube() override;
-    void render(Camera& camera, Shader& shader) override;
-    void render_pick(Camera& camera, Shader& shader);
-};
 
+class PickFrame
+{
+  public:
+    struct PickData
+    {
+      float type_id;
+      float object_id;
+      float face_id;
+    };
+  private:
+    GLuint fbo_;
+    GLuint texture_;
+    GLuint depth_texture_;
+  public:
+    PickFrame();
+    ~PickFrame();
+    void bind();
+    void unbind();
+    PickData read_pixel(const float& x, const float& y);
+
+};
 }
 #endif

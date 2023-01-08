@@ -13,6 +13,7 @@
 #include "RenderLib/Camera.hpp"
 #include "RenderLib/Shader.hpp"
 #include "RenderLib/Cube.hpp"
+#include "RenderLib/PickFrame.hpp"
 
 namespace RenderLib
 {
@@ -22,9 +23,13 @@ private:
     Shader shader_;
     Camera camera_;
     Cube cube_;
+    PickFrame pick_frame_;
 
 public:
     struct Context {
+      unsigned int pick_type_id;
+      unsigned int pick_object_id;
+      unsigned int pick_face_id;
     };
 public:
     Renderer(entt::registry& registry);
