@@ -27,9 +27,9 @@ private:
 
 public:
     struct Context {
-      unsigned int pick_type_id;
-      unsigned int pick_object_id;
-      unsigned int pick_face_id;
+      int pick_type_id;
+      int pick_object_id;
+      int pick_face_id;
     };
 public:
     Renderer(entt::registry& registry);

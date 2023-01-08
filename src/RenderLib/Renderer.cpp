@@ -56,12 +56,12 @@ void Renderer::update()
 
     /* fetch pick data */
     {
-      auto widow_width = registry_.ctx().get<Window::Context>().width;
-      auto widow_height = registry_.ctx().get<Window::Context>().height;
-      auto x = 0.5f;
-      auto y = 0.5f;
+      const auto mouse_x = registry_.ctx().get<Window::Context>().mouse_x;
+      const auto mouse_y = registry_.ctx().get<Window::Context>().mouse_y;
+      const auto x = mouse_x;
+      const auto y = mouse_y;
       auto pick_data = pick_frame_.read_pixel(x, y);
-      registry_.ctx().get<Context>().pick_type_id = pick_data.type_id;
+      registry_.ctx().get<Context>().pick_type_id = static_cast<unsigned int>(1000.f * pick_data.type_id);
       registry_.ctx().get<Context>().pick_object_id = pick_data.object_id;
       registry_.ctx().get<Context>().pick_face_id = pick_data.face_id;
     }

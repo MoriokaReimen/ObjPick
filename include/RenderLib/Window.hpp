@@ -23,6 +23,8 @@ public:
         int width;
         int height;
         float ratio;
+        double mouse_x;
+        double mouse_y;
     };
 
     struct WindowClose {};

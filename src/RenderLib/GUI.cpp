@@ -9,6 +9,7 @@
 */
 #include "RenderLib/GUI.hpp"
 #include "RenderLib/Window.hpp"
+#include "RenderLib/Renderer.hpp"
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -119,10 +120,19 @@ void GUI::update()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    static bool show_demo_window = true;
-    if (show_demo_window) {
-        ImGui::ShowDemoWindow(&show_demo_window);
-    }
+    ImGui::Begin("Main");
+    const auto& mouse_x = registry_.ctx().get<Window::Context>().mouse_x;
+    const auto& mouse_y = registry_.ctx().get<Window::Context>().mouse_y;
+    ImGui::Text("Mouse X : %lf", mouse_x);
+    ImGui::Text("Mouse Y : %lf", mouse_y);
+
+    const auto& pick_type_id = registry_.ctx().get<Renderer::Context>().pick_type_id;
+    const auto& pick_object_id = registry_.ctx().get<Renderer::Context>().pick_object_id;
+    const auto& pick_face_id = registry_.ctx().get<Renderer::Context>().pick_face_id;
+    ImGui::Text("Type ID : %d", pick_type_id);
+    ImGui::Text("Object ID : %d", pick_object_id);
+    ImGui::Text("Face ID : %d", pick_face_id);
+    ImGui::End();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

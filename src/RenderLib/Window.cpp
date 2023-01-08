@@ -13,7 +13,6 @@
 #include <GLFW/glfw3.h>
 #include <spdlog/spdlog.h>
 
-
 static void error_callback(int error, const char* description)
 {
     spdlog::error("GLFW Error {}:{}", error, description);
@@ -142,6 +141,11 @@ void Window::update()
     /* Update frame buffer size */
     glfwGetFramebufferSize(window, &width, &height);
     ratio = static_cast<float>(height) / static_cast<float>(width);
+
+    /* Update mouse position */
+    auto& mouse_x = registry_.ctx().get<Context>().mouse_x;
+    auto& mouse_y = registry_.ctx().get<Context>().mouse_y;
+    glfwGetCursorPos(window, &mouse_x, &mouse_y);
 
     /* Render window */
     glfwSwapBuffers(window);

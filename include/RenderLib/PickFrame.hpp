@@ -32,7 +32,7 @@ class PickFrame
     ~PickFrame();
     void bind();
     void unbind();
-    PickData read_pixel(const float& x, const float& y);
+    PickData read_pixel(const int& x, const int& y);
 
 };
 }

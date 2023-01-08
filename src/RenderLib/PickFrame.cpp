@@ -10,8 +10,8 @@
 #include "RenderLib/PickFrame.hpp"
 #include <spdlog/spdlog.h>
 
-constexpr unsigned int WIDTH = 1000;
-constexpr unsigned int HEIGHT = 1000;
+constexpr unsigned int WIDTH = 5000;
+constexpr unsigned int HEIGHT = 5000;
 
 namespace RenderLib
 {
@@ -36,20 +36,10 @@ namespace RenderLib
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D,
                 depth_texture_, 0);
 
-    // Disable reading to avoid problems with older GPUs
-    glReadBuffer(GL_NONE);
-    glDrawBuffer(GL_COLOR_ATTACHMENT0);
-
-    // Verify that the FBO is correct
-    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-
-    if (status != GL_FRAMEBUFFER_COMPLETE) {
-      spdlog::error("FB error, status: {}", status);
-    }
 
     // Restore the default framebuffer
-    glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
   }
 
   PickFrame::~PickFrame()
@@ -62,23 +52,36 @@ namespace RenderLib
   void PickFrame::bind()
   {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo_);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
 
   void PickFrame::unbind()
   {
+    // Disable reading to avoid problems with older GPUs
+    glReadBuffer(GL_NONE);
+    glDrawBuffer(GL_COLOR_ATTACHMENT0);
+
+    // Verify that the FBO is correct
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+    if (status != GL_FRAMEBUFFER_COMPLETE) {
+      spdlog::error("FB error, status: {}", status);
+    }
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
   }
 
-  PickFrame::PickData PickFrame::read_pixel(const float& x, const float& y)
+  PickFrame::PickData PickFrame::read_pixel(const int& x, const int& y)
   {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo_);
     glReadBuffer(GL_COLOR_ATTACHMENT0);
-    const unsigned int pixel_x = x * WIDTH;
-    const unsigned int pixel_y = y * HEIGHT;
+    const int pixel_x = x;
+    const int pixel_y = y;
 
     PickData pick;
     glReadPixels(pixel_x, pixel_y, 1, 1, GL_RGB, GL_FLOAT, &pick);
+    spdlog::info("R:{} G:{} B:{}", pick.type_id, pick.object_id, pick.face_id);
 
     glReadBuffer(GL_NONE);
     glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
