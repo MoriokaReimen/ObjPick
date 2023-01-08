@@ -23,6 +23,7 @@ public:
     struct Context {
         double fps_msec;
         double consumption_percent;
+        long int time_msec;
     };
 public:
     System(entt::registry& registry);

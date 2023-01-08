@@ -48,6 +48,9 @@ void System::update()
     registry_.ctx().get<Context>().fps_msec = diff.count();
     registry_.ctx().get<Context>().consumption_percent = diff.count() / TARGET_FPS_MSEC;
 
+    /* Update system time */
+    registry_.ctx().get<Context>().time_msec = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
     /* Mark FPS start time for next loop */
     frame_start_ = std::chrono::system_clock::now();
 }

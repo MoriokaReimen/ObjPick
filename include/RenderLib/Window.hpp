@@ -32,6 +32,12 @@ public:
     void init() override;
     void update() override;
     bool should_close() const;
+
+    void on_resize(int width, int height);
+    void on_key(int key, int scancode, int action, int mods);
+    void on_mouse_button(int button, int action, int mods);
+    void on_mouse_move(double x_pos, double y_pos);
+    void on_mouse_wheel(double x_offset, double y_offset);
 };
 }
 #endif

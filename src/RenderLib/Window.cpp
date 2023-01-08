@@ -31,6 +31,7 @@ static void message_callback(GLenum source, GLenum type, GLuint id, GLenum sever
 		case GL_DEBUG_SOURCE_APPLICATION: return "APPLICATION";
 		case GL_DEBUG_SOURCE_OTHER: return "OTHER";
 		}
+    return "OTHER";
 	}();
 
 	auto const type_str = [type]() {
@@ -44,6 +45,7 @@ static void message_callback(GLenum source, GLenum type, GLuint id, GLenum sever
 		case GL_DEBUG_TYPE_MARKER: return "MARKER";
 		case GL_DEBUG_TYPE_OTHER: return "OTHER";
 		}
+    return "OTHER";
 	}();
 
 	auto const severity_str = [severity]() {
@@ -53,6 +55,7 @@ static void message_callback(GLenum source, GLenum type, GLuint id, GLenum sever
 		case GL_DEBUG_SEVERITY_MEDIUM: return "MEDIUM";
 		case GL_DEBUG_SEVERITY_HIGH: return "HIGH";
 		}
+    return "OTHER";
 	}();
   spdlog::info("GL:{},{},{},{},{}", src_str, type_str, severity_str, id, message);
 }
@@ -133,6 +136,26 @@ void Window::update()
         const auto entity = registry_.create();
         registry_.emplace<WindowClose>(entity);
     }
+}
+
+void Window::on_resize(int width, int height)
+{
+}
+
+void Window::on_key(int key, int scancode, int action, int mods)
+{
+}
+
+void Window::on_mouse_button(int button, int action, int mods)
+{
+}
+
+void Window::on_mouse_move(double x_pos, double y_pos)
+{
+}
+
+void Window::on_mouse_wheel(double x_offset, double y_offset)
+{
 }
 
 bool Window::should_close() const
