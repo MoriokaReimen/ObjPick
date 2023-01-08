@@ -5,6 +5,6 @@ uniform mat4 MVP;
 
 void main()
 {
-   color = MVP * vec4(aPos, 1.0);
+   color = vec4(1.0, 0, 0, 1.0);
    gl_Position = MVP * vec4(aPos, 1.0);
 }

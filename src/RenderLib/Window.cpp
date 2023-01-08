@@ -11,6 +11,7 @@
 #include <exception>
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include <imgui_impl_glfw.h>
 #include <spdlog/spdlog.h>
 
 static void error_callback(int error, const char* description)
@@ -77,6 +78,55 @@ static void message_callback(GLenum source, GLenum type, GLuint id, GLenum sever
     spdlog::info("GL:{},{},{},{},{}", src_str, type_str, severity_str, id, message);
 }
 
+static void WindowFocusCallback(GLFWwindow* window, int focused)
+{
+  ImGui_ImplGlfw_WindowFocusCallback(window, focused);
+}
+
+static void CursorEnterCallback(GLFWwindow* window, int entered)
+{
+  ImGui_ImplGlfw_CursorEnterCallback(window, entered);
+}
+
+static void CursorPosCallback(GLFWwindow* window, double x, double y)
+{
+  static_cast<RenderLib::Window*>(glfwGetWindowUserPointer(window))->on_mouse_move(x, y);
+  ImGui_ImplGlfw_CursorPosCallback(window, x, y);
+}
+
+static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+  static_cast<RenderLib::Window*>(glfwGetWindowUserPointer(window))->on_mouse_button(button, action, mods);
+  ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+}
+
+ static void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+  static_cast<RenderLib::Window*>(glfwGetWindowUserPointer(window))->on_mouse_wheel(xoffset, yoffset);
+  ImGui_ImplGlfw_ScrollCallback(window, xoffset, yoffset);
+}
+
+static void KeyCallback(GLFWwindow* window, int keycode, int scancode, int action, int mods)
+{
+  static_cast<RenderLib::Window*>(glfwGetWindowUserPointer(window))->on_key(keycode, scancode, action, mods);
+  ImGui_ImplGlfw_KeyCallback(window, keycode, scancode, action, mods);
+}
+
+static void WindowSizeCallback(GLFWwindow* window, int width, int height)
+{
+  static_cast<RenderLib::Window*>(glfwGetWindowUserPointer(window))->on_resize(width, height);
+}
+
+static void CharCallback(GLFWwindow* window, unsigned int c)
+{
+  ImGui_ImplGlfw_CharCallback(window, c);
+}
+
+static void MonitorCallback(GLFWmonitor* monitor, int action)
+{
+  ImGui_ImplGlfw_MonitorCallback(monitor, action);
+}
+
 namespace RenderLib
 {
 Window::Window(entt::registry& registry)
@@ -130,6 +180,18 @@ void Window::init()
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(message_callback, nullptr);
+
+     /* Install call back functions */
+     glfwSetWindowFocusCallback(window, WindowFocusCallback);
+     glfwSetCursorEnterCallback(window, CursorEnterCallback);
+     glfwSetCursorPosCallback(window, CursorPosCallback);
+     glfwSetMouseButtonCallback(window, MouseButtonCallback);
+     glfwSetScrollCallback(window, ScrollCallback);
+     glfwSetKeyCallback(window, KeyCallback);
+     glfwSetCharCallback(window, CharCallback);
+     glfwSetWindowSizeCallback(window, WindowSizeCallback);
+     glfwSetMonitorCallback(MonitorCallback);
+     glfwSetWindowUserPointer(window, this);
 }
 
 void Window::update()

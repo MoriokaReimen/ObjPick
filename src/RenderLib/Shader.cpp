@@ -115,6 +115,12 @@ Shader::Shader()
         programs_["Cube"] = program;
     }
 
+    /* Compile cube shader */
+    {
+        auto program = compile_("shader/Cube-Pick.vert", "shader/Cube-Pick.frag");
+        programs_["Cube-Pick"] = program;
+    }
+
     introspect();
 }
 

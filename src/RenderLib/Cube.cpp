@@ -77,14 +77,14 @@ void Cube::render(Camera& camera, Shader& shader)
     const Eigen::Matrix4f mvp = model * view * proj;
     shader.set_uniform("MVP", mvp);
 
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, sizeof(indices)/ sizeof(unsigned int), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
     shader.use_program("None");
 }
 
 void Cube::render_pick(Camera& camera, Shader& shader)
 {
-    shader.use_program("Cube");
+    shader.use_program("Cube-Pick");
     glBindVertexArray(vao_);
 
     /* set uniform */
@@ -94,7 +94,7 @@ void Cube::render_pick(Camera& camera, Shader& shader)
     const Eigen::Matrix4f mvp = model * view * proj;
     shader.set_uniform("MVP", mvp);
 
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, sizeof(indices)/ sizeof(unsigned int), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
     shader.use_program("None");
 }

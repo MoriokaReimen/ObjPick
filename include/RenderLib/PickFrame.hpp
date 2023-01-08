@@ -19,9 +19,9 @@ class PickFrame
   public:
     struct PickData
     {
-      float type_id;
-      float object_id;
-      float face_id;
+      unsigned int type_id;
+      unsigned int object_id;
+      unsigned int face_id;
     };
   private:
     GLuint fbo_;

@@ -31,7 +31,6 @@ void Renderer::init()
 {
     spdlog::info("Renderer Initialized");
     glEnable(GL_DEPTH_TEST);
-    glDepthMask(GL_FALSE);
     glDepthFunc(GL_LESS);
 }
 
@@ -44,7 +43,7 @@ void Renderer::update()
     camera_.set_perspective(30.f, 1.f / ratio, 0.01f, 10000.f);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    camera_.look_at(Eigen::Vector3f(10.f, 10.f, 10.f), Eigen::Vector3f::Zero(), Eigen::Vector3f::UnitZ());
+    camera_.look_at(Eigen::Vector3f(-5.f, -5.f, 5.f), Eigen::Vector3f::Zero(), Eigen::Vector3f::UnitZ());
 
     /* Render object */
     cube_.render(camera_, shader_);
@@ -58,10 +57,11 @@ void Renderer::update()
     {
       const auto mouse_x = registry_.ctx().get<Window::Context>().mouse_x;
       const auto mouse_y = registry_.ctx().get<Window::Context>().mouse_y;
+      const auto window_height = registry_.ctx().get<Window::Context>().height;
       const auto x = mouse_x;
-      const auto y = mouse_y;
+      const auto y = window_height - mouse_y;
       auto pick_data = pick_frame_.read_pixel(x, y);
-      registry_.ctx().get<Context>().pick_type_id = static_cast<unsigned int>(1000.f * pick_data.type_id);
+      registry_.ctx().get<Context>().pick_type_id = pick_data.type_id;
       registry_.ctx().get<Context>().pick_object_id = pick_data.object_id;
       registry_.ctx().get<Context>().pick_face_id = pick_data.face_id;
     }

@@ -110,7 +110,7 @@ void GUI::init()
     /* Setup Platform/Renderer backends */
     constexpr char glsl_version[] = "#version 150";
     auto& window = registry_.ctx().get<Window::Context>().window;
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(window, false);
     ImGui_ImplOpenGL3_Init(glsl_version);
 }
 

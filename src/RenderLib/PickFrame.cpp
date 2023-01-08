@@ -52,6 +52,8 @@ namespace RenderLib
   void PickFrame::bind()
   {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo_);
+    glEnable(GL_DEPTH_TEST); 
+    glDepthFunc(GL_LESS);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
@@ -79,13 +81,19 @@ namespace RenderLib
     const int pixel_x = x;
     const int pixel_y = y;
 
-    PickData pick;
-    glReadPixels(pixel_x, pixel_y, 1, 1, GL_RGB, GL_FLOAT, &pick);
-    spdlog::info("R:{} G:{} B:{}", pick.type_id, pick.object_id, pick.face_id);
+    struct PixelData
+    {
+      float type_id;
+      float object_id;
+      float face_id;
+    }pixel_data;
+
+    glReadPixels(pixel_x, pixel_y, 1, 1, GL_RGB, GL_FLOAT, &pixel_data);
 
     glReadBuffer(GL_NONE);
     glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+    PickData data{static_cast<unsigned int>(10000.f * pixel_data.type_id), static_cast<unsigned int>(10000.f * pixel_data.object_id), static_cast<unsigned int>(10000.f * pixel_data.face_id)};
 
-    return pick;
+    return data;
   }
 }
