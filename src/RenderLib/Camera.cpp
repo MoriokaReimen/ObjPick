@@ -68,12 +68,12 @@ void Camera::set_ortho(const float& left, const float& right, const float& botto
 
 void Camera::look_at(const Eigen::Vector3f& eye, const Eigen::Vector3f& center, const Eigen::Vector3f& up)
 {
-  Eigen::Matrix3f R;
-  R.col(2) = (eye-center).normalized();
-  R.col(0) = up.cross(R.col(2)).normalized();
-  R.col(1) = R.col(2).cross(R.col(0));
-  quat() = Eigen::Quaternionf(R.transpose());
-  pos() =  -R.transpose() * eye;
+    Eigen::Matrix3f R;
+    R.col(2) = (eye-center).normalized();
+    R.col(0) = up.cross(R.col(2)).normalized();
+    R.col(1) = R.col(2).cross(R.col(0));
+    quat() = Eigen::Quaternionf(R.transpose());
+    pos() =  -R.transpose() * eye;
 }
 
 }

@@ -17,9 +17,9 @@ namespace RenderLib
 class IRenderObject
 {
 public:
-  IRenderObject() = default;
-  virtual ~IRenderObject() = default;
-  virtual void render(Camera& camera, Shader& shader) = 0;
+    IRenderObject() = default;
+    virtual ~IRenderObject() = default;
+    virtual void render(Camera& camera, Shader& shader) = 0;
 };
 
 }

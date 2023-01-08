@@ -17,13 +17,13 @@ namespace RenderLib
 {
 class Cube : public Transform, IRenderObject
 {
-  GLuint vao_;
-  GLuint vbo_;
-  GLuint ebo_;
+    GLuint vao_;
+    GLuint vbo_;
+    GLuint ebo_;
 public:
-  Cube();
-  ~Cube() override;
-  void render(Camera& camera, Shader& shader) override;
+    Cube();
+    ~Cube() override;
+    void render(Camera& camera, Shader& shader) override;
 };
 
 }

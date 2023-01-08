@@ -18,15 +18,15 @@ namespace RenderLib
 {
 class Renderer : public IModule
 {
-  private:
+private:
     Shader shader_;
     Camera camera_;
     Cube cube_;
 
-  public:
+public:
     struct Context {
     };
-  public:
+public:
     Renderer(entt::registry& registry);
     ~Renderer() override;
     void init() override;

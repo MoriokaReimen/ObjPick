@@ -223,8 +223,8 @@ bool Shader::set_uniform(const std::string& name, const Eigen::Vector4f& value)
 {
     bool ret = false;
     const GLuint location = glGetUniformLocation(current_program_, name.c_str());
-        glProgramUniform4fv(current_program_, location, 1, value.data());
-        ret = true;
+    glProgramUniform4fv(current_program_, location, 1, value.data());
+    ret = true;
 
     return ret;
 }
@@ -243,8 +243,8 @@ bool Shader::set_uniform(const std::string& name, const Eigen::Matrix3f& value)
 {
     bool ret = false;
     const GLuint location = glGetUniformLocation(current_program_, name.c_str());
-        glProgramUniformMatrix3fv(current_program_, location, 1, GL_TRUE, value.data());
-        ret = true;
+    glProgramUniformMatrix3fv(current_program_, location, 1, GL_TRUE, value.data());
+    ret = true;
 
     return ret;
 }
@@ -261,43 +261,40 @@ bool Shader::set_uniform(const std::string& name, const Eigen::Matrix4f& value)
 
 void Shader::introspect() const
 {
-	const int max_name_length = 64;
-	const int num_parameters = 2;
-	GLint num_outputs = 0;
-  for(const auto& elem : programs_)
-  {
-    if(elem.first == "None") continue;
-    spdlog::info("Program {} introspect:", elem.first);
+    const int max_name_length = 64;
+    const int num_parameters = 2;
+    GLint num_outputs = 0;
+    for(const auto& elem : programs_) {
+        if(elem.first == "None") continue;
+        spdlog::info("Program {} introspect:", elem.first);
 
-    /* Get Program Output */
-    glGetProgramInterfaceiv(elem.second, GL_PROGRAM_OUTPUT, GL_ACTIVE_RESOURCES, &num_outputs);
-    static const GLenum properties[]{ GL_TYPE, GL_LOCATION };
-    GLint params[num_parameters];
-    GLchar name[max_name_length];
-    for (GLuint index = 0; index != num_outputs; ++index)
-    {
-      glGetProgramResourceName(elem.second, GL_PROGRAM_OUTPUT, index, sizeof(name), nullptr, name);
-      glGetProgramResourceiv(elem.second, GL_PROGRAM_OUTPUT, index, num_parameters, properties, num_parameters, nullptr, params);
-      spdlog::info("Index: {} is type {} is named {} at location {}", index, params[0], name, params[1]);
+        /* Get Program Output */
+        glGetProgramInterfaceiv(elem.second, GL_PROGRAM_OUTPUT, GL_ACTIVE_RESOURCES, &num_outputs);
+        static const GLenum properties[] { GL_TYPE, GL_LOCATION };
+        GLint params[num_parameters];
+        GLchar name[max_name_length];
+        for (GLuint index = 0; index != num_outputs; ++index) {
+            glGetProgramResourceName(elem.second, GL_PROGRAM_OUTPUT, index, sizeof(name), nullptr, name);
+            glGetProgramResourceiv(elem.second, GL_PROGRAM_OUTPUT, index, num_parameters, properties, num_parameters, nullptr, params);
+            spdlog::info("Index: {} is type {} is named {} at location {}", index, params[0], name, params[1]);
+        }
+
+        /* Get Uniform information */
+        GLint numBlocks = 0;
+        glGetProgramInterfaceiv(elem.second, GL_UNIFORM, GL_ACTIVE_RESOURCES, &numBlocks);
+        const GLenum blockProperties[1] = {GL_NUM_ACTIVE_VARIABLES};
+        const GLenum activeUnifProp[1] = {GL_ACTIVE_VARIABLES};
+        const GLenum unifProperties[3] = {GL_NAME_LENGTH, GL_TYPE, GL_LOCATION};
+
+        for(GLuint i = 0; i < numBlocks; ++i) {
+            GLsizei length;
+            GLint size;
+            GLenum type;
+            std::string name;
+            name.resize(256);
+            glGetActiveUniform(elem.second, i, 256, &length, &size, &type, &name[0]);
+            spdlog::info("Uniform {} is type {} at {}", name, type, i);
+        }
     }
-
-    /* Get Uniform information */
-    GLint numBlocks = 0;
-    glGetProgramInterfaceiv(elem.second, GL_UNIFORM, GL_ACTIVE_RESOURCES, &numBlocks);
-    const GLenum blockProperties[1] = {GL_NUM_ACTIVE_VARIABLES};
-    const GLenum activeUnifProp[1] = {GL_ACTIVE_VARIABLES};
-    const GLenum unifProperties[3] = {GL_NAME_LENGTH, GL_TYPE, GL_LOCATION};
-
-    for(GLuint i = 0; i < numBlocks; ++i)
-    {
-        GLsizei length;
-        GLint size;
-        GLenum type;
-        std::string name;
-        name.resize(256);
-        glGetActiveUniform(elem.second, i, 256, &length, &size, &type, &name[0]);
-        spdlog::info("Uniform {} is type {} at {}", name, type, i);
-    }
-  }
 }
 }
