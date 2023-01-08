@@ -41,24 +41,21 @@ namespace RenderLib
 Cube::Cube()
   : vao_(0u), vbo_(0u), ebo_(0u)
 {
-  glGenVertexArrays(1, &vao_);  
-  glBindVertexArray(vao_);
-
-  /* create vertex buffer */
-  glGenBuffers(1, &vbo_);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-  glEnableVertexAttribArray(0);  
-
+  /* Create and bind cube VAO */
+  glCreateVertexArrays(1, &vao_);
+  /* Create buffer*/
+  glCreateBuffers(1, &vbo_);
+  glNamedBufferStorage(vbo_, sizeof(vertices), vertices, 0);
   /* create element buffer */
-  glGenBuffers(1, &ebo_);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-  glBindVertexArray(0);
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  glCreateBuffers(1, &ebo_);
+  glNamedBufferStorage(ebo_, sizeof(indices), indices, 0);
+  glVertexArrayElementBuffer(vao_, ebo_);
+  /* Set up position attribute in VAO */
+  glEnableVertexArrayAttrib(vao_, 0);
+  glVertexArrayAttribFormat(vao_, 0, 3, GL_FLOAT, GL_FALSE, 0);
+  glVertexArrayAttribBinding(vao_, 0, 0);
+  /* Set buffer that backs the VAO */
+  glVertexArrayVertexBuffer(vao_, 0, vbo_, 0, sizeof(float) * 3);
 }
 
 Cube::~Cube()

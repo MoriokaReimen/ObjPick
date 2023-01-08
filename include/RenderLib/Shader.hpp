@@ -42,9 +42,7 @@ public:
     bool set_uniform(const std::string& name, const Eigen::Matrix3f& value);
     bool set_uniform(const std::string& name, const Eigen::Matrix4f& value);
 
-
-
-
+    void introspect() const;
 };
 }
 #endif
