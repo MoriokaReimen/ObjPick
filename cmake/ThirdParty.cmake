@@ -196,3 +196,23 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glm)
 
+###########################################################################
+# Fetch imgui
+###########################################################################
+FetchContent_Declare(
+  imgui
+  GIT_REPOSITORY https://github.com/ocornut/imgui.git
+  GIT_TAG        v1.89.2
+  GIT_SHALLOW    ON
+  QUIET          OFF
+  GIT_PROGRESS   ON
+  OVERRIDE_FIND_PACKAGE
+)
+FetchContent_Populate(imgui)
+file(GLOB IMGUI_SRC ${imgui_SOURCE_DIR}/*.cpp ${imgui_SOURCE_DIR}/*.h
+                    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.h ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+                    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.h ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
+add_library(imgui STATIC ${IMGUI_SRC})
+target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${imgui_SOURCE_DIR}/backends/)
+add_library(imgui::imgui ALIAS imgui)
+

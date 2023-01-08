@@ -35,7 +35,7 @@ file(GLOB RENDER_SRC ${CMAKE_CURRENT_LIST_DIR}/src/RenderLib/*.cpp)
 add_library(RenderLib STATIC ${RENDER_SRC})
 target_include_directories(RenderLib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
 target_link_libraries(RenderLib Boost::Boost EnTT::EnTT glfw Eigen3::Eigen fmt::fmt
-                                spdlog::spdlog glad_gl_core_46 RenderLib::shaders)
+                                spdlog::spdlog glad_gl_core_46 RenderLib::shaders imgui::imgui)
 
 ###########################################################################
 # Configure main
