@@ -22,7 +22,7 @@ public:
         GLFWwindow* window;
         int width;
         int height;
-        float ratio;
+        float aspect;
         double mouse_x;
         double mouse_y;
     };

@@ -38,9 +38,9 @@ void Renderer::update()
 {
     const auto width = registry_.ctx().get<Window::Context>().width;
     const auto height = registry_.ctx().get<Window::Context>().height;
-    const auto ratio = registry_.ctx().get<Window::Context>().ratio;
+    const auto aspect = registry_.ctx().get<Window::Context>().aspect;
     glViewport(0, 0, width, height);
-    camera_.set_perspective(30.f, 1.f / ratio, 0.01f, 10000.f);
+    camera_.set_perspective(30.f, aspect, 0.01f, 10000.f);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     camera_.look_at(Eigen::Vector3f(-5.f, -5.f, 5.f), Eigen::Vector3f::Zero(), Eigen::Vector3f::UnitZ());

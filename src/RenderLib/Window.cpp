@@ -197,21 +197,8 @@ void Window::init()
 void Window::update()
 {
     auto& window = registry_.ctx().get<Context>().window;
-    auto& width = registry_.ctx().get<Context>().width;
-    auto& height = registry_.ctx().get<Context>().height;
-    auto& ratio = registry_.ctx().get<Context>().ratio;
-    /* Update frame buffer size */
-    glfwGetFramebufferSize(window, &width, &height);
-    ratio = static_cast<float>(height) / static_cast<float>(width);
-
-    /* Update mouse position */
-    auto& mouse_x = registry_.ctx().get<Context>().mouse_x;
-    auto& mouse_y = registry_.ctx().get<Context>().mouse_y;
-    glfwGetCursorPos(window, &mouse_x, &mouse_y);
-
     /* Render window */
     glfwSwapBuffers(window);
-
     /* Wait for events */
     glfwPollEvents();
 
@@ -224,6 +211,9 @@ void Window::update()
 
 void Window::on_resize(int width, int height)
 {
+    registry_.ctx().get<Context>().width = width;
+    registry_.ctx().get<Context>().height = height;
+    registry_.ctx().get<Context>().aspect = static_cast<float>(width) / static_cast<float>(height);
 }
 
 void Window::on_key(int key, int scancode, int action, int mods)
@@ -236,6 +226,9 @@ void Window::on_mouse_button(int button, int action, int mods)
 
 void Window::on_mouse_move(double x_pos, double y_pos)
 {
+  /* Update mouse position */
+  registry_.ctx().get<Context>().mouse_x = x_pos;
+  registry_.ctx().get<Context>().mouse_y = y_pos;
 }
 
 void Window::on_mouse_wheel(double x_offset, double y_offset)
