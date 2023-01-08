@@ -14,9 +14,12 @@ int main()
 
     RenderLib::Renderer renderer(registry);
     renderer.init();
+    RenderLib::GUI gui(registry);
+    gui.init();
 
     while(!window.should_close()) {
         renderer.update();
+        gui.update();
         window.update();
         system.update();
     }
