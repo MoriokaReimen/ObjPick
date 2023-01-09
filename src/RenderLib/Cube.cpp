@@ -65,7 +65,6 @@ Cube::Cube()
 
     glVertexArrayVertexBuffer(vao_, 1, sbo_, 0, sizeof(GLint));
     glVertexArrayAttribFormat(vao_, 1, 0, GL_INT, GL_FALSE, 0);
-    // glVertexArrayAttribBinding(vao_, 1, 0);
     glEnableVertexArrayAttrib(vao_, 1);
 }
 
