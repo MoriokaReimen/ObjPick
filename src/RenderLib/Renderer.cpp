@@ -69,6 +69,7 @@ void Renderer::update()
     pick_frame_.unbind();
 
     /* fetch pick data */
+    if(registry_.ctx().get<Window::Context>().left_mouse_down)
     {
       const auto mouse_x = registry_.ctx().get<Window::Context>().mouse_x;
       const auto mouse_y = registry_.ctx().get<Window::Context>().mouse_y;
@@ -76,10 +77,32 @@ void Renderer::update()
       const auto x = mouse_x;
       const auto y = window_height - mouse_y;
       auto pick_data = pick_frame_.read_pixel(x, y);
+      if(pick_data.type_id != 0)
+      {
+        cube_.mark_selection(pick_data.face_id);
+      }
       registry_.ctx().get<Context>().pick_type_id = pick_data.type_id;
       registry_.ctx().get<Context>().pick_object_id = pick_data.object_id;
       registry_.ctx().get<Context>().pick_face_id = pick_data.face_id;
     }
+
+    if(registry_.ctx().get<Window::Context>().right_mouse_down)
+    {
+      const auto mouse_x = registry_.ctx().get<Window::Context>().mouse_x;
+      const auto mouse_y = registry_.ctx().get<Window::Context>().mouse_y;
+      const auto window_height = registry_.ctx().get<Window::Context>().height;
+      const auto x = mouse_x;
+      const auto y = window_height - mouse_y;
+      auto pick_data = pick_frame_.read_pixel(x, y);
+      if(pick_data.type_id != 0)
+      {
+        cube_.unmark_selection(pick_data.face_id);
+      }
+      registry_.ctx().get<Context>().pick_type_id = pick_data.type_id;
+      registry_.ctx().get<Context>().pick_object_id = pick_data.object_id;
+      registry_.ctx().get<Context>().pick_face_id = pick_data.face_id;
+    }
+
 }
 
 }

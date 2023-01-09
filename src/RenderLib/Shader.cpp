@@ -32,9 +32,6 @@ GLuint Shader::compile_(const std::string& vertex_path, const std::string& fragm
     {
         GLint result = GL_FALSE;
         glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result);
-        if(result) {
-            spdlog::info("{} : OK", vertex_path);
-        }
 
         int message_length;
         glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &message_length);
@@ -43,6 +40,13 @@ GLuint Shader::compile_(const std::string& vertex_path, const std::string& fragm
             message.resize(message_length+1);
             glGetShaderInfoLog(vertex_shader, message_length, NULL, &message[0]);
             spdlog::info("{} : {}", vertex_path, message);
+        }
+
+        if(result) {
+            spdlog::info("{} : OK", vertex_path);
+        } else {
+            spdlog::info("{} : NG", vertex_path);
+            throw std::runtime_error("Vertex compile fail");
         }
     }
 
@@ -58,9 +62,6 @@ GLuint Shader::compile_(const std::string& vertex_path, const std::string& fragm
     {
         GLint result = GL_FALSE;
         glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &result);
-        if(result) {
-            spdlog::info("{} : OK", fragment_path);
-        }
 
         int message_length;
         glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &message_length);
@@ -69,6 +70,12 @@ GLuint Shader::compile_(const std::string& vertex_path, const std::string& fragm
             message.resize(message_length+1);
             glGetShaderInfoLog(fragment_shader, message_length, NULL, &message[0]);
             spdlog::info("{} : {}", fragment_path, message);
+        }
+        if(result) {
+            spdlog::info("{} : OK", fragment_path);
+        } else {
+            spdlog::error("{} : NG", fragment_path);
+            throw std::runtime_error("Fragment compile fail");
         }
     }
 
@@ -81,9 +88,6 @@ GLuint Shader::compile_(const std::string& vertex_path, const std::string& fragm
     {
         GLint result = GL_FALSE;
         glGetProgramiv(program, GL_LINK_STATUS, &result);
-        if(result) {
-            spdlog::info("Link {} {}: OK", vertex_path, fragment_path);
-        }
 
         int message_length;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &message_length);
@@ -92,6 +96,12 @@ GLuint Shader::compile_(const std::string& vertex_path, const std::string& fragm
             message.resize(message_length+1);
             glGetProgramInfoLog(program, message_length, NULL, &message[0]);
             spdlog::info("Link {} {} : {}", vertex_path, fragment_path, message);
+        }
+        if(result) {
+            spdlog::info("Link {} {}: OK", vertex_path, fragment_path);
+        } else {
+            spdlog::error("Link {} {}: NG", vertex_path, fragment_path);
+            throw std::runtime_error("Link fail");
         }
     }
     /* Cleanup shaders */

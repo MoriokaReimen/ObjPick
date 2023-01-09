@@ -20,11 +20,14 @@ class Cube : public Transform, IRenderObject
     GLuint vao_;
     GLuint vbo_;
     GLuint ebo_;
+    GLuint sbo_;
 public:
     Cube();
     ~Cube() override;
     void render(Camera& camera, Shader& shader) override;
     void render_pick(Camera& camera, Shader& shader);
+    void mark_selection(const unsigned int& face_idx);
+    void unmark_selection(const unsigned int& face_idx);
 };
 
 }

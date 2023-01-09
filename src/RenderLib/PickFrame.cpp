@@ -92,7 +92,7 @@ namespace RenderLib
 
     glReadBuffer(GL_NONE);
     glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-    PickData data{static_cast<unsigned int>(10000.f * pixel_data.type_id), static_cast<unsigned int>(10000.f * pixel_data.object_id), static_cast<unsigned int>(10000.f * pixel_data.face_id)};
+    PickData data{static_cast<unsigned int>(pixel_data.type_id), static_cast<unsigned int>(pixel_data.object_id), static_cast<unsigned int>(pixel_data.face_id)};
 
     return data;
   }
