@@ -35,6 +35,7 @@ Eigen::Vector3f Transform::get_pos() const
 void Transform::set_quat(const Eigen::Quaternionf& quat)
 {
     quat_ = quat;
+    quat_.normalize();
 }
 
 Eigen::Quaternionf Transform::get_quat() const
@@ -67,6 +68,7 @@ void Transform::from_rpy(const float& roll, const float& pitch, const float& yaw
     quat_ = Eigen::AngleAxisf(roll, Eigen::Vector3f::UnitX())
             * Eigen::AngleAxisf(pitch, Eigen::Vector3f::UnitY())
             * Eigen::AngleAxisf(yaw, Eigen::Vector3f::UnitZ());
+    quat_.normalize();
 }
 
 Eigen::Vector3f Transform::to_rpy() const
@@ -84,6 +86,24 @@ Eigen::Matrix4f Transform::get_mat() const
     ret.block(0, 3, 3, 1) = pos_;
 
     return ret;
+}
+
+void Transform::roll(const float& angle_degree)
+{
+  quat_ = quat_ * Eigen::AngleAxisf(angle_degree / 180.f * PI, Eigen::Vector3f::UnitX());
+  quat_.normalize();
+}
+
+void Transform::pitch(const float& angle_degree)
+{
+  quat_ = quat_ * Eigen::AngleAxisf(angle_degree / 180.f * PI, Eigen::Vector3f::UnitY());
+  quat_.normalize();
+}
+
+void Transform::yaw(const float& angle_degree)
+{
+  quat_ = quat_ * Eigen::AngleAxisf(angle_degree / 180.f * PI, Eigen::Vector3f::UnitZ());
+  quat_.normalize();
 }
 
 }

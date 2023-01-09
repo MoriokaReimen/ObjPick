@@ -77,9 +77,10 @@ namespace RenderLib
   PickFrame::PickData PickFrame::read_pixel(const int& x, const int& y)
   {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo_);
+    glFlush();
+    glFinish();
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glReadBuffer(GL_COLOR_ATTACHMENT0);
-    const int pixel_x = x;
-    const int pixel_y = y;
 
     struct PixelData
     {
@@ -88,7 +89,7 @@ namespace RenderLib
       float face_id;
     }pixel_data;
 
-    glReadPixels(pixel_x, pixel_y, 1, 1, GL_RGB, GL_FLOAT, &pixel_data);
+    glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, &pixel_data);
 
     glReadBuffer(GL_NONE);
     glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);

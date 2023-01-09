@@ -36,16 +36,31 @@ void Renderer::init()
 
 void Renderer::update()
 {
+    /* set camera */
     const auto width = registry_.ctx().get<Window::Context>().width;
     const auto height = registry_.ctx().get<Window::Context>().height;
     const auto aspect = registry_.ctx().get<Window::Context>().aspect;
-    glViewport(0, 0, width, height);
     camera_.set_perspective(30.f, aspect, 0.01f, 10000.f);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     camera_.look_at(Eigen::Vector3f(-5.f, -5.f, 5.f), Eigen::Vector3f::Zero(), Eigen::Vector3f::UnitZ());
 
+    /* initialize gl render */
+    glViewport(0, 0, width, height);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     /* Render object */
+    static float last_mouse_x = 0.f;
+    static float last_mouse_y = 0.f;
+    const auto& mouse_x = registry_.ctx().get<Window::Context>().mouse_x;
+    const auto& mouse_y = registry_.ctx().get<Window::Context>().mouse_y;
+    if(registry_.ctx().get<Window::Context>().left_mouse_down)
+    {
+      cube_.yaw(last_mouse_x - mouse_x);
+      cube_.roll(last_mouse_y - mouse_y);
+    }
+    last_mouse_x = mouse_x;
+    last_mouse_y = mouse_y;
+
     cube_.render(camera_, shader_);
 
     /* render pick data */

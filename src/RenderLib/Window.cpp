@@ -222,6 +222,23 @@ void Window::on_key(int key, int scancode, int action, int mods)
 
 void Window::on_mouse_button(int button, int action, int mods)
 {
+  if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+  {
+    registry_.ctx().get<Context>().right_mouse_down = true;
+  }
+  if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
+  {
+    registry_.ctx().get<Context>().right_mouse_down = false;
+  }
+
+  if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+  {
+    registry_.ctx().get<Context>().left_mouse_down = true;
+  }
+  if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+  {
+    registry_.ctx().get<Context>().left_mouse_down = false;
+  }
 }
 
 void Window::on_mouse_move(double x_pos, double y_pos)

@@ -25,6 +25,8 @@ public:
         float aspect;
         double mouse_x;
         double mouse_y;
+        bool left_mouse_down;
+        bool right_mouse_down;
     };
 
     struct WindowClose {};

@@ -1,6 +1,4 @@
 #version 460 core
-
-flat in int face_id;
 out vec4 FragColor;
 
 void main()

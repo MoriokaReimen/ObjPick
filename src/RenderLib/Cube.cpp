@@ -23,8 +23,8 @@ constexpr float vertices[] = {
 constexpr unsigned int indices[] = {  // note that we start from 0!
     0, 1, 2,
     0, 2, 3,
-    0, 4, 8,
-    0, 3, 7,
+    0, 4, 7,
+    0, 7, 3,
     0, 4, 5,
     0, 1, 5,
     1, 2, 6,
