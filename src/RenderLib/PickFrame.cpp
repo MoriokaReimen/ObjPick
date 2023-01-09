@@ -25,6 +25,8 @@ namespace RenderLib
     glBindTexture(GL_TEXTURE_2D, texture_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, WIDTH, HEIGHT,
                 0, GL_RGB, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                 texture_, 0);
 
@@ -36,6 +38,14 @@ namespace RenderLib
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D,
                 depth_texture_, 0);
 
+    glReadBuffer(GL_NONE);
+    glDrawBuffer(GL_COLOR_ATTACHMENT0);
+
+    // Verify that the FBO is correct
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (status != GL_FRAMEBUFFER_COMPLETE) {
+      spdlog::error("FB error, status: {}", status);
+    }
 
     // Restore the default framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -60,17 +70,6 @@ namespace RenderLib
 
   void PickFrame::unbind()
   {
-    // Disable reading to avoid problems with older GPUs
-    glReadBuffer(GL_NONE);
-    glDrawBuffer(GL_COLOR_ATTACHMENT0);
-
-    // Verify that the FBO is correct
-    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-
-    if (status != GL_FRAMEBUFFER_COMPLETE) {
-      spdlog::error("FB error, status: {}", status);
-    }
-    glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
   }
 
